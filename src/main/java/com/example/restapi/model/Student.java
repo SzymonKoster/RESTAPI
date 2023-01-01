@@ -5,7 +5,7 @@ import com.example.restapi.model.Enums.StudentCondition;
 
 
 public class Student {
-    private long nrAlbumu;
+    private int nrAlbumu;
     private String imie;
     private String nazwisko;
     private StudentCondition stanStudenta;
@@ -14,7 +14,8 @@ public class Student {
     private double iloscPunktow;
 
 
-    public Student(long nrAlbumu, String imie, String nazwisko, StudentCondition stanStudenta, int rokUrodzenia, Gender plec, double iloscPunktow) {
+
+    public Student(int nrAlbumu, String imie, String nazwisko, StudentCondition stanStudenta, int rokUrodzenia, Gender plec, double iloscPunktow) {
         this.nrAlbumu = nrAlbumu;
         this.imie = imie;
         this.nazwisko = nazwisko;
@@ -25,59 +26,92 @@ public class Student {
     }
 
 
-    public long getNrAlbumu() {
+    public void print() {
+        System.out.println("Informacje o studencie: ");
+        System.out.println("Nr albumu:  " + nrAlbumu);
+        System.out.println("Imie:       " + imie);
+        System.out.println("Nazwisko:   " + nazwisko);
+        System.out.println("Stan:       " + stanStudenta);
+        System.out.println("Rok urodzenia: " + rokUrodzenia);
+        System.out.println("Plec:       " + plec);
+        System.out.println("Ilosc punktow: " + iloscPunktow);
+    }
+
+
+
+    public int getNrAlbumu() {
         return nrAlbumu;
     }
 
-    /*    public void setNrAlbumu(long nrAlbumu) {
+    public Student setNrAlbumu(int nrAlbumu) {
         this.nrAlbumu = nrAlbumu;
-    }*/
+        return null;
+    }
 
     public String getImie() {
         return imie;
     }
 
-    public void setImie(String imie) {
+    public Student setImie(String imie) {
         this.imie = imie;
+        return null;
     }
 
     public String getNazwisko() {
         return nazwisko;
     }
 
-    public void setNazwisko(String nazwisko) {
+    public Student setNazwisko(String nazwisko) {
         this.nazwisko = nazwisko;
+        return null;
     }
 
     public StudentCondition getStanStudenta() {
         return stanStudenta;
     }
 
-    public void setStanStudenta(StudentCondition stanStudenta) {
+    public Student setStanStudenta(StudentCondition stanStudenta) {
         this.stanStudenta = stanStudenta;
+        return null;
     }
 
     public int getRokUrodzenia() {
         return rokUrodzenia;
     }
 
-    public void setRokUrodzenia(int rokUrodzenia) {
+    public Student setRokUrodzenia(int rokUrodzenia) {
         this.rokUrodzenia = rokUrodzenia;
+        return null;
     }
 
     public Gender getPlec() {
         return plec;
     }
 
-    public void setPlec(Gender plec) {
+    public Student setPlec(Gender plec) {
         this.plec = plec;
+        return null;
     }
 
     public double getIloscPunktow() {
         return iloscPunktow;
     }
 
-    public void setIloscPunktow(double iloscPunktow) {
+    public Student setIloscPunktow(double iloscPunktow) {
         this.iloscPunktow = iloscPunktow;
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "nrAlbumu=" + nrAlbumu +
+                ", imie='" + imie + '\'' +
+                ", nazwisko='" + nazwisko + '\'' +
+                ", stanStudenta=" + stanStudenta +
+                ", rokUrodzenia=" + rokUrodzenia +
+                ", plec=" + plec +
+                ", iloscPunktow=" + iloscPunktow +
+                '}';
     }
 }
