@@ -59,11 +59,12 @@ public class APIController {
 
 
     //dodaje nowa grupe studentow
+                                    //TODO: trzeba poprawić dodawanie grup żeby nie wymagało listy studentów
     @PostMapping("/group")
     public void addNewGroup(@RequestBody Group newGroup){studentService.addNewGroup(newGroup);}
 
     //usuwa konkretna grupe studentow
-    @DeleteMapping("/group")
+    @DeleteMapping("/group")        //TODO: NIE DZIAŁA
     @ResponseBody
     public void deleteGroup(@RequestParam int nrGrupy){studentService.deleteGroup(nrGrupy);}
 
@@ -80,22 +81,22 @@ public class APIController {
 
 
     //zwraca konkretny kierunek
-    @GetMapping("/fieldOfStudy")
+    @GetMapping("/fieldOfStudy") //TODO: nie do  końca działa
     public FieldOfStudy getFieldodStudyByName(@RequestParam String nameFieldOfStudy){
         return studentService.getFieldodStudyByName(nameFieldOfStudy);
     }
 
     //dodaje nowy kierunek
-    @PostMapping("/fieldOfStudy")
+    @PostMapping("/fieldOfStudy")   //TODO: trzeba poprawić dodawanie grup żeby nie wymagało niczego po za nazwą
     public void addNewFieldOfStudy(@RequestBody FieldOfStudy nameFieldOfStudy){studentService.addNewFieldOfStudy(nameFieldOfStudy);}
 
     //usuwa konkretny kierunek
-    @DeleteMapping("/fieldOfStudy")
+    @DeleteMapping("/fieldOfStudy") //TODO: nie działa
     @ResponseBody
     public void deleteFieldOfStudy(@RequestParam String nameFieldOfStudy){studentService.deleteFieldOfStudy(nameFieldOfStudy);}
 
     //zwraca wszsytkie kierunku
-    @GetMapping("/fieldOfStudys")
+    @GetMapping("/fieldOfStudies")
     public ArrayList getAllFieldOfStudy(){
         return studentService.getAllFieldOfStudy();
     }
