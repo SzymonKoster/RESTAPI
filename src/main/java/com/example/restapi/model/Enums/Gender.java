@@ -1,15 +1,15 @@
 package com.example.restapi.model.Enums;
 
 public enum Gender {
-    mezczyzna{
+    mezczyzna {
         @Override
         public String toString() {
             return "mezczyzna";
         }
     },
-    kobieta{
+    kobieta {
         @Override
-        public String toString(){
+        public String toString() {
             return "kobieta";
         }
     },

@@ -4,9 +4,11 @@ import com.example.restapi.model.FieldOfStudy;
 import com.example.restapi.model.Group;
 import com.example.restapi.model.Student;
 import com.example.restapi.service.StudentService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 @RestController
@@ -21,91 +23,114 @@ public class APIController {
         this.studentService = studentService;
     }
 
-    //Zwraca konkretnego studenta
     @GetMapping("/student")
-    public Student getStudentById(@RequestParam int nrAlbumu){
+    public Student getStudentById(@RequestParam int nrAlbumu) {
         return studentService.getStudentById(nrAlbumu);
     }
 
-    //dodaje nowego studenta
     @PostMapping("/student")
-    public void addNewStudent(@RequestBody Student newStudent){studentService.addNewStudent(newStudent);}
+    public void addNewStudent(@RequestBody Student newStudent) {
+        studentService.addNewStudent(newStudent);
+    }
 
-    //usuwa konkretnego studenta
     @DeleteMapping("/student")
     @ResponseBody
-    public void deleteStudent(@RequestParam int nrAlbumu){studentService.deleteStudent(nrAlbumu);}
+    public void deleteStudent(@RequestParam int nrAlbumu) {
+        studentService.deleteStudent(nrAlbumu);
+    }
 
-    //zwraca wszystkich studentow
     @GetMapping("/students")
-    public ArrayList getAllStudents(){
+    public ArrayList getAllStudents() {
         return studentService.getAllStudents();
     }
 
-    //zwraca konkretnego studenta jako csv
-    //@GetMapping("/student/csv")
+    @GetMapping("/student.csv")
+    public void downloadOneCsvStudent(@RequestParam int nrAlbumu, HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; file=student{" + nrAlbumu + "}.csv");
+        studentService.downloadOneCsvStudent(nrAlbumu, response.getWriter());
+    }
 
-    //zwraca wszystkich studentow jako csv
-    //@GetMapping("/students/csv")
+    @GetMapping("/students.csv")
+    public void downloadAllCsvStudent(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; file=students.csv");
+        studentService.downloadAllCsvStudent(response.getWriter(), studentService.getAllStudents());
+    }
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //zwraca konkretna grupe studentow
     @GetMapping("/group")
-    public Group getGroupByName(@RequestParam int nrGrupy){
-        return studentService.getGroupByName(nrGrupy);
+    public Group getGroupById(@RequestParam int nrGrupy) {
+        return studentService.getGroupById(nrGrupy);
     }
 
-
-    //dodaje nowa grupe studentow
-                                    //TODO: trzeba poprawić dodawanie grup żeby nie wymagało listy studentów
     @PostMapping("/group")
-    public void addNewGroup(@RequestBody Group newGroup){studentService.addNewGroup(newGroup);}
+    public void addNewGroup(@RequestBody Group newGroup) {
+        studentService.addNewGroup(newGroup);
+    }
 
-    //usuwa konkretna grupe studentow
-    @DeleteMapping("/group")        //TODO: NIE DZIAŁA
+    @DeleteMapping("/group")
     @ResponseBody
-    public void deleteGroup(@RequestParam int nrGrupy){studentService.deleteGroup(nrGrupy);}
+    public void deleteGroup(@RequestParam int nrGrupy) {
+        studentService.deleteGroup(nrGrupy);
+    }
 
-    //zwraca wszytskie grupy studentow
     @GetMapping("/groups")
-    public ArrayList getAllGruops(){
+    public ArrayList getAllGruops() {
         return studentService.getAllGruops();
     }
 
-    //zwraca konkretna grupe jako csv
+    @GetMapping("/group.csv")
+    public void downloadOneCsvGroup(@RequestParam int nrGrupy, HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; file=group{" + nrGrupy + "}.csv");
+        studentService.downloadOneCsvGroup(nrGrupy, response.getWriter());
+    }
 
-    //zwraca wszystkie grupy jako csv
+    @GetMapping("/groups.csv")
+    public void downloadAllCsvGroup(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; file=groups.csv");
+        studentService.downloadAllCsvGroup(response.getWriter(), studentService.getAllGruops());
+    }
 
 
-
-    //zwraca konkretny kierunek
-    @GetMapping("/fieldOfStudy") //TODO: nie do  końca działa
-    public FieldOfStudy getFieldodStudyByName(@RequestParam String nameFieldOfStudy){
+    @GetMapping("/fieldOfStudy")
+    public FieldOfStudy getFieldOfStudyByName(@RequestParam String nameFieldOfStudy) {
         return studentService.getFieldodStudyByName(nameFieldOfStudy);
     }
 
-    //dodaje nowy kierunek
-    @PostMapping("/fieldOfStudy")   //TODO: trzeba poprawić dodawanie grup żeby nie wymagało niczego po za nazwą
-    public void addNewFieldOfStudy(@RequestBody FieldOfStudy nameFieldOfStudy){studentService.addNewFieldOfStudy(nameFieldOfStudy);}
+    @PostMapping("/fieldOfStudy")
+    public void addNewFieldOfStudy(@RequestBody FieldOfStudy nameFieldOfStudy) {
+        studentService.addNewFieldOfStudy(nameFieldOfStudy);
+    }
 
-    //usuwa konkretny kierunek
-    @DeleteMapping("/fieldOfStudy") //TODO: nie działa
+    @DeleteMapping("/fieldOfStudy")
     @ResponseBody
-    public void deleteFieldOfStudy(@RequestParam String nameFieldOfStudy){studentService.deleteFieldOfStudy(nameFieldOfStudy);}
+    public void deleteFieldOfStudy(@RequestParam String nameFieldOfStudy) {
+        studentService.deleteFieldOfStudy(nameFieldOfStudy);
+    }
 
-    //zwraca wszsytkie kierunku
     @GetMapping("/fieldOfStudies")
-    public ArrayList getAllFieldOfStudy(){
+    public ArrayList getAllFieldOfStudy() {
         return studentService.getAllFieldOfStudy();
     }
 
-    //zwraca konkretny kierunek jako csv
+    @GetMapping("/fieldOfStudy.csv")
+    public void downloadOneCsvFieldOfStudy(@RequestParam String nameFieldOfStudy, HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; file=fieldOfStudy{" + nameFieldOfStudy + "}.csv");
+        studentService.downloadOneCsvFieldOfStudy(nameFieldOfStudy, response.getWriter());
+    }
 
-    //zwraca wszsytkie kierunki jako csv
-
-
+    @GetMapping("/fieldOfStudies.csv")
+    public void downloadAllCsvFieldOfStudy(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; file=fieldOfStudies.csv");
+        studentService.downloadAllCsvFieldOfStudy(response.getWriter(), studentService.getAllFieldOfStudy());
+    }
 
 
 }

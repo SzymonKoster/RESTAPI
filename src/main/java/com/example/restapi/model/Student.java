@@ -104,6 +104,14 @@ public class Student {
 
     @Override
     public String toString() {
+        System.out.println("Informacje o studencie: ");
+        System.out.println("Nr albumu:  " + nrAlbumu);
+        System.out.println("Imie:       " + imie);
+        System.out.println("Nazwisko:   " + nazwisko);
+        System.out.println("Stan:       " + stanStudenta);
+        System.out.println("Rok urodzenia: " + rokUrodzenia);
+        System.out.println("Plec:       " + plec);
+        System.out.println("Ilosc punktow: " + iloscPunktow);
         return "Student{" +
                 "nrAlbumu=" + nrAlbumu +
                 ", imie='" + imie + '\'' +

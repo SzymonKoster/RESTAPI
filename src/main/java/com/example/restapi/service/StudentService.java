@@ -4,7 +4,9 @@ import com.example.restapi.model.FieldOfStudy;
 import com.example.restapi.model.Group;
 import com.example.restapi.model.Student;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface StudentService {
 
@@ -16,9 +18,12 @@ public interface StudentService {
 
     public ArrayList getAllStudents();
 
+    public void downloadOneCsvStudent(int nrAlbumu, PrintWriter printWriter);
+
+    public void downloadAllCsvStudent(PrintWriter printWriter, List<Student> students);
 
 
-    public Group getGroupByName(int nrGrupy);
+    public Group getGroupById(int nrGrupy);
 
     public void addNewGroup(Group newGroup);
 
@@ -26,6 +31,9 @@ public interface StudentService {
 
     public ArrayList getAllGruops();
 
+    public void downloadOneCsvGroup(int nrGrupy, PrintWriter printWriter);
+
+    public void downloadAllCsvGroup(PrintWriter printWriter, List<Group> students);
 
 
     public FieldOfStudy getFieldodStudyByName(String nameFieldOfStudy);
@@ -35,5 +43,9 @@ public interface StudentService {
     public void deleteFieldOfStudy(String nameFieldOfStudy);
 
     public ArrayList getAllFieldOfStudy();
+
+    public void downloadOneCsvFieldOfStudy(String nameFieldOfStudy, PrintWriter printWriter);
+
+    public void downloadAllCsvFieldOfStudy(PrintWriter printWriter, List<FieldOfStudy> students);
 
 }

@@ -5,10 +5,14 @@ import com.example.restapi.model.Enums.StudentCondition;
 import com.example.restapi.model.FieldOfStudy;
 import com.example.restapi.model.Group;
 import com.example.restapi.model.Student;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 @Service
@@ -67,17 +71,16 @@ public class StudentServiceImpl implements StudentService {
     ));
 
     ArrayList<Group> groups = new ArrayList<>(Arrays.asList(
-            new Group(1, "Grupa 1", 10 ,students1),
-            new Group(2, "Grupa 2",  12,students2 ),
-            new Group(3, "Grupa 3",  14, students3 ),
-            new Group(4,  "Grupa 4", 16, students4 )
+            new Group(1, "Grupa 1", 10, students1),
+            new Group(2, "Grupa 2", 12, students2),
+            new Group(3, "Grupa 3", 14, students3),
+            new Group(4, "Grupa 4", 16, students4)
     ));
 
     ArrayList<FieldOfStudy> fieldsOfStudies = new ArrayList<>(Arrays.asList(
             new FieldOfStudy("InfaTechniczna", groups)
     ));
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
 
     //Students:
     @Override
@@ -87,7 +90,7 @@ public class StudentServiceImpl implements StudentService {
                 return student;
             }
         }
-        return null;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie ma studenta o podanym id");
     }
 
     @Override
@@ -97,16 +100,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(int nrAlbumu) {
-        students.remove(students.indexOf(findStudent(nrAlbumu)));
-    }
-
-    public Student findStudent(int nrAlbumu) {
-        for (Student student : students) {
-            if (student.getNrAlbumu() == nrAlbumu) {
-                return student;
-            }
-        }
-        return null;
+        students.remove(students.indexOf(getStudentById(nrAlbumu)));
     }
 
     @Override
@@ -118,20 +112,31 @@ public class StudentServiceImpl implements StudentService {
         return listaStudentow;
     }
 
+    @Override
+    public void downloadOneCsvStudent(int nrAlbumu, PrintWriter printWriter) {
+        printWriter.write("nrAlbumu, imie, nazwisko, stanStudenta, rokUrodzenia, plec, iloscPunktow\n");
+        Student student = students.get(students.indexOf(getStudentById(nrAlbumu)));
+        printWriter.write(student.getNrAlbumu() + "," + student.getImie() + "," + student.getNazwisko() + "," + student.getStanStudenta() + "," + student.getRokUrodzenia() + "," + student.getPlec() + "," + student.getIloscPunktow() + "\n");
+    }
 
-
-
+    @Override
+    public void downloadAllCsvStudent(PrintWriter printWriter, List<Student> students) {
+        printWriter.write("nrAlbumu, imie, nazwisko, stanStudenta, rokUrodzenia, plec, iloscPunktow\n");
+        for (Student student : students) {
+            printWriter.write(student.getNrAlbumu() + "," + student.getImie() + "," + student.getNazwisko() + "," + student.getStanStudenta() + "," + student.getRokUrodzenia() + "," + student.getPlec() + "," + student.getIloscPunktow() + "\n");
+        }
+    }
 
 
     //Groups:
     @Override
-    public Group getGroupByName(int nrGrupy) {
+    public Group getGroupById(int nrGrupy) {
         for (Group group : groups) {
             if (group.getNumerGrupy() == nrGrupy) {
                 return group;
             }
         }
-        return null;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie ma grupy o podanym id");
     }
 
     @Override
@@ -141,17 +146,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteGroup(int nrGrupy) {
-        groups.remove(groups.indexOf(findGroup(nrGrupy)));
+        groups.remove(groups.indexOf(getGroupById(nrGrupy)));
     }
 
-    public Group findGroup(int nrGrupy) {
-        for (Group group : groups) {
-            if (group.getNumerGrupy() == nrGrupy) {
-                return group;
-            }
-        }
-        return null;
-    }
 
     @Override
     public ArrayList getAllGruops() {
@@ -162,42 +159,43 @@ public class StudentServiceImpl implements StudentService {
         return listaGrup;
     }
 
+    @Override
+    public void downloadOneCsvGroup(int nrGrupy, PrintWriter printWriter) {
+        printWriter.write("Nr grupy, Nazwa grupy, Maksymalna ilosc studentow w grupie, Lista studentow\n");
+        Group group = groups.get(groups.indexOf(getGroupById(nrGrupy)));
+        printWriter.write(group.getNumerGrupy() + "," + group.getNazwaGrupy() + "," + group.getMaksymalnaIloscStudentow() + "," + group.getListaStudentow() + "\n");
+    }
 
-
-
+    @Override
+    public void downloadAllCsvGroup(PrintWriter printWriter, List<Group> groups) {
+        printWriter.write("Nr grupy, Nazwa grupy, Maksymalna ilosc studentow w grupie, Lista studentow\n");
+        for (Group group : groups) {
+            printWriter.write(group.getNumerGrupy() + "," + group.getNazwaGrupy() + "," + group.getMaksymalnaIloscStudentow() + "," + group.getListaStudentow() + "\n");
+        }
+    }
 
 
     //Kierunek:
     @Override
     public FieldOfStudy getFieldodStudyByName(String nameFieldOfStudy) {
         for (FieldOfStudy fieldOfStudy : fieldsOfStudies) {
-            if (fieldOfStudy.getNameFieldOfStudy() == nameFieldOfStudy) {
+            if (fieldOfStudy.getNameFieldOfStudy().equals(nameFieldOfStudy)) {
                 return fieldOfStudy;
             }
         }
-        return null;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie ma kierunku o podanej nazwie");
     }
 
     @Override
     public void addNewFieldOfStudy(FieldOfStudy newFieldOfStudy) {
         fieldsOfStudies.add(newFieldOfStudy);
     }
+
     @Override
     public void deleteFieldOfStudy(String nameFieldOfStudy) {
-//        System.out.println("Nazwa grupy");
-//        System.out.println(nameFieldOfStudy);
-//        System.out.println(groups.indexOf(findFieldOfStudy(nameFieldOfStudy)));
-        groups.remove(groups.indexOf(findFieldOfStudy(nameFieldOfStudy)));
+        fieldsOfStudies.remove(fieldsOfStudies.indexOf(getFieldodStudyByName(nameFieldOfStudy)));
     }
 
-    public FieldOfStudy findFieldOfStudy(String nameFieldOfStudy) {
-        for (FieldOfStudy fieldOfStudy : fieldsOfStudies) {
-            if (fieldOfStudy.getNameFieldOfStudy() == nameFieldOfStudy) {
-                return fieldOfStudy;
-            }
-        }
-        return null;
-    }
 
     @Override
     public ArrayList getAllFieldOfStudy() {
@@ -208,5 +206,19 @@ public class StudentServiceImpl implements StudentService {
         return listaKierunkow;
     }
 
+    @Override
+    public void downloadOneCsvFieldOfStudy(String nameFieldOfStudy, PrintWriter printWriter) {
+        printWriter.write("Nazwa kierunku, Lista grup\n");
+        FieldOfStudy fieldOfStudy = fieldsOfStudies.get(fieldsOfStudies.indexOf(getFieldodStudyByName(nameFieldOfStudy)));
+        printWriter.write(fieldOfStudy.getNameFieldOfStudy() + "," + fieldOfStudy.getListaGrup() + "\n");
+    }
+
+    @Override
+    public void downloadAllCsvFieldOfStudy(PrintWriter printWriter, List<FieldOfStudy> fieldOfStudies) {
+        printWriter.write("Nazwa kierunku, Lista grup\n");
+        for (FieldOfStudy fieldOfStudy : fieldOfStudies) {
+            printWriter.write(fieldOfStudy.getNameFieldOfStudy() + "," + fieldOfStudy.getListaGrup() + "\n");
+        }
+    }
 
 }

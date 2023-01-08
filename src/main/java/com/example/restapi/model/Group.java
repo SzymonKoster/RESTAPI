@@ -230,4 +230,19 @@ public class Group implements Comparator<Student> {
         System.out.println("Lista studentow:\n" + listaStudentow);
         return null;
     }
+
+    @Override
+    public String toString() {
+        System.out.println("Informacje o grupie: ");
+        System.out.println("Nr grupy:  " + numerGrupy);
+        System.out.println("Nazwa grupy:       " + nazwaGrupy);
+        System.out.println("Maksymalna ilość studentow w grupie:   " + maksymalnaIloscStudentow);
+        System.out.println("Lista studentow:\n" + listaStudentow);
+        return "Group{" +
+                "Nr grupy=" + numerGrupy +
+                ", Nazwa grupy='" + nazwaGrupy + '\'' +
+                ", Maksymalna ilość studentow w grupie=" + maksymalnaIloscStudentow +
+                ", Lista studentow=" + listaStudentow +
+                '}';
+    }
 }
